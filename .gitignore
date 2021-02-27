@@ -1,0 +1,6 @@
+
+# Builds
+*.apk
+*.aab
+*.meta
+*.unitypackage

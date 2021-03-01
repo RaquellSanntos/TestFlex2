@@ -329,6 +329,7 @@
 "Assets/Script/MataParticulas.cs"
 "Assets/Script/NasCubos.cs"
 "Assets/Script/Pontuacao.cs"
+"Assets/Script/RoboctArm/AgarrObj.cs"
 "Assets/Script/RoboctArm/BaseControllerMain.cs"
 "Assets/Script/RoboctArm/BaseGarraController.cs"
 "Assets/Script/RoboctArm/BracoMainController.cs"

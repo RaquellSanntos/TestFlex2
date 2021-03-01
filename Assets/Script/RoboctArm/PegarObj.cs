@@ -1,58 +1,83 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PegarObj : MonoBehaviour
 {
-    public string[] Tags;
-    public GameObject ObjPegando;
-    [Space(20)]
-    public float DistMax;
-    public bool Pegando;
-    public GameObject Local;
-    public LayerMask Layoso;
+    public string[] objectTags;
+    [Tooltip("Force to apply in object")]
+    public float forceGrab = 5;
+    public float maxDist;
+    [Tooltip("Put all layers, the player layer not!")]
+    public LayerMask acceptLayers = 0;
+
+
+    private GameObject grabedObj;
+    private Vector2 rigSaveGrabed;
+
+
+    //in next videos i'll improve this script!
 
     void Update()
     {
-        if (Pegando == true)
+        Transform cam = Camera.main.transform;
+        RaycastHit hit = new RaycastHit();
+
+        if (Physics.Raycast(cam.position, cam.forward, out hit, maxDist, acceptLayers, QueryTriggerInteraction.Ignore))
         {
-            if (Input.GetMouseButton(2))
+            Debug.DrawLine(cam.position, hit.point, Color.blue);
+
+            foreach (string tag in objectTags)
+                if (hit.transform.tag == tag)
+                {
+                    if (Input.GetMouseButtonDown(0))
+                        grabedObj = hit.transform.gameObject;
+
+                }
+        }
+
+
+        if (grabedObj != null)
+        {
+            if (!grabedObj.GetComponent<Rigidbody>())
             {
-                Pegando = false;
-                ObjPegando.transform.parent = null;
-                ObjPegando.GetComponent<Rigidbody>().isKinematic = false;
-                ObjPegando = null;
+                Debug.LogError("Your object NEED RigidBody Component! | Coloque um Rigidbody no objeto!");
                 return;
             }
-        }
-        if (Pegando == false)
-        {
-            RaycastHit Hit = new RaycastHit();
-            if (Physics.Raycast(transform.position, transform.forward, out Hit, DistMax, Layoso, QueryTriggerInteraction.Ignore))
-            {
-                Debug.DrawLine(transform.position, Hit.point, Color.green);
 
-                ObjPegando = Hit.transform.gamebject;
-                for (int x = 0; x < Tags.Length; x++)
-                {
-                    if (Hit.transform.gameObject.tag == Tags[x])
-                    {
-                        if (Input.GetMouseButtonDown(2))//Ao clicar o botão scroll do mouse
-                        {
-                            Pegando = true;
-                            ObjPegando = Hit.transform.gameObject;
-                             if (ObjPegando.GetComponent<Rigidbody>())
-                             {
-                                 ObjPegando.GetComponent<Rigidbody>().isKinematic = true;
-                                 ObjPegando.transform.position = Local.transform.position;
-                                 ObjPegando.transform.rotation = Local.transform.rotation;
-                                 ObjPegando.transform.parent = Local.transform;
-                             }
-                            return;
-                        }
-                    }
-                }
-            }
+            Rigidbody objRig = grabedObj.GetComponent<Rigidbody>();
+            Vector3 posGrab = cam.position + cam.forward * maxDist;
+            float dist = Vector3.Distance(grabedObj.transform.position, posGrab);
+            float calc = forceGrab * dist * 6 * Time.deltaTime;
+
+            if (rigSaveGrabed == Vector2.zero)
+                rigSaveGrabed = new Vector2(objRig.drag, objRig.angularDrag);
+            objRig.drag = 2.5f;
+            objRig.angularDrag = 2.5f;
+            objRig.AddForce(-(grabedObj.transform.position - posGrab).normalized * calc, ForceMode.Impulse);
+
+            if (Input.GetMouseButtonUp(0) || objRig.velocity.magnitude >= 25 || dist >= 8)
+                UngrabObject();
+        }
+
+
+    }
+
+    void UngrabObject()
+    {
+        Rigidbody objRig = grabedObj.GetComponent<Rigidbody>();
+        objRig.drag = rigSaveGrabed.x;
+        objRig.angularDrag = rigSaveGrabed.y;
+        rigSaveGrabed = Vector2.zero;
+
+        grabedObj = null;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Transform cam = Camera.main.transform;
+        if (!Physics.Raycast(cam.position, cam.forward, maxDist))
+        {
+            Gizmos.DrawLine(cam.position, cam.position + cam.forward * maxDist);
         }
     }
 }

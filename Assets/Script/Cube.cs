@@ -11,7 +11,7 @@ public class Cube : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("CHAO"))
         {
-            Destroy(gameObject,2);
+            Destroy(gameObject,4);
         }
     }
 }

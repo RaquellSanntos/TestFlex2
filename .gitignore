@@ -1,6 +1,13 @@
 
 # Builds
+*.metadata
 *.apk
 *.aab
 *.meta
 *.unitypackage
+*.json
+*.vsconfig
+*.bin
+*.log
+*.vs/
+

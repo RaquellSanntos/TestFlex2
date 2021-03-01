@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BaseGarraController : MonoBehaviour
 {
-    //cONTROLE DA GARRA: SUBIR E DESCER A PINÇA
+    //CONTROLE DA GARRA: SUBIR E DESCER A PINÇA
 
 
     [SerializeField]
@@ -12,11 +12,11 @@ public class BaseGarraController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.DownArrow)) //Desce a pinça inferior
         {
             transform.Rotate(new Vector3(0, vel * Time.deltaTime,0));
         }
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.UpArrow))//Sobe a pinça inferior
         {
             transform.Rotate(new Vector3(0, -vel * Time.deltaTime,0));
         }

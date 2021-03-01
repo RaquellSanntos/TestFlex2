@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AnimGarra : MonoBehaviour
-{ //Animação da Garra...
+
+{ //Animação da Garra (Abrir e Fechar a pinça)...
     [SerializeField]
     private Animator _Animacao;
 
@@ -16,13 +17,14 @@ public class AnimGarra : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0)|| (Input.GetKey(KeyCode.Alpha1)))
         {
             _Animacao.SetTrigger("Abrir");
 
-        } if (Input.GetMouseButtonDown(1))
+        } 
+       /* if (Input.GetMouseButtonDown(1))
         {
             _Animacao.SetTrigger("Fechar");
-        }
+        }*/
     }
 }

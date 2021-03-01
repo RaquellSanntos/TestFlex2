@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityEngine;
 
 public class Sair : MonoBehaviour
+    //SAIR DO JOGO
 {
     [SerializeField]
     private bool btnSair;

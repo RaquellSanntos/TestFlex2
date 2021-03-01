@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Pegador : MonoBehaviour
 {
-    //ROTAÇÃO DA PINÇA 
+    //ROTAÇÃO DA PINÇA PELO SCROLL DO MOUSE
 
     void Update()
     {

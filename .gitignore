@@ -6,8 +6,4 @@
 *.meta
 *.unitypackage
 *.json
-*.vsconfig
 *.bin
-*.log
-*.vs/
-
